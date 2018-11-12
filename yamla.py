@@ -36,6 +36,19 @@ class AttributeDict(dict):
 
 
 def load_yaml(path):
+    """Loads a yaml file with its items accessible as attributes.
+
+    Args:
+        path: path to .yml file
+
+    Returns:
+        config (AttributeDict): as specified in .yml file
+
+    Example:
+        >>> config = load_yaml(path)
+        >>> print(config.strings.hello_world)
+        "Hello World."
+    """
     with open(path) as file:
         config = yaml.load(file)
     config = AttributeDict(config)
