@@ -1,0 +1,36 @@
+import unittest
+
+from yamla import load_yaml
+from yamla import AttributeDict
+
+
+class AttributeDictTestCases(unittest.TestCase):
+    def test_get_item(self):
+        self.assertEqual(self.config.c, True, 'fails to get a simple item')
+
+    def test_get_chained_item(self):
+        self.assertEqual(self.config.b, AttributeDict(dict(dinner='no', lunch='yes')))
+        self.assertEqual(self.config.b.dinner, 'no')
+        self.assertEqual(self.config.b.lunch, 'yes')
+
+    def test_crash_on_key_error(self):
+        with self.assertRaises(KeyError):
+            self.config.definitely_not_in_the_dictionary
+
+    def test_set_item(self):
+        some_value = 'some value'
+        self.config['new_key'] = some_value
+        self.assertEqual(self.config.new_key, some_value, 'cant add a new item')
+
+    def test_set_item_as_attribute(self):
+        some_value = 'some value'
+        self.config.new_key = some_value
+        self.assertEqual(self.config.new_key, some_value, 'cant add a new item from attribute')
+
+    def setUp(self):
+        path = 'test_configs/test1.yml'
+        self.config = load_yaml(path)
+
+
+if __name__ == '__main__':
+    unittest.main()
