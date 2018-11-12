@@ -23,8 +23,13 @@ class AttributeDict(dict):
     def __getattr__(self, key):
         return super().__getitem__(key)
 
-    def __setattr__(self, key, value):
+    def __setitem__(self, key, value):
+        if isinstance(value, dict):
+            value = AttributeDict(value)
         super().__setitem__(key, value)
+
+    def __setattr__(self, key, value):
+        self.__setitem__(key, value)
 
     def __delattr__(self, key):
         super().pop(key)
@@ -35,21 +40,3 @@ def load_yaml(path):
         config = yaml.load(file)
     config = AttributeDict(config)
     return config
-
-
-if __name__ == '__main__':
-    path = 'test_configs/test1.yml'
-    y = load_yaml(path)
-
-    print(y)
-    print(y.b)
-    del y.b
-    print(y)
-    print(y.a)
-    print(y['a'])
-    print(y.a.cat)
-
-    y = AttributeDict(y)
-
-    print(y)
-    y.de = 'asd'
