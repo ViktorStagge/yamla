@@ -1,5 +1,5 @@
 # yamla
-Loading yaml config files to support `config.easier.readability` .
+Loading yaml config files as AttributeDict to support `config.easier.readability` .
 
 
 ### Example:
